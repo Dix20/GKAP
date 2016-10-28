@@ -31,13 +31,14 @@ public class BFS {
 		} else {
 
 			for (int i = 0; i < s.length; i++) {
-				if (!queue.contains(s[0])) {
+				if (!queue.contains(s[0]) && !bearbeitet.contains(s[0])) {
 					queue.add(s[i]);
 				}
 			}
 
 			if (queue.size() > 0) {
-				return 1 + bfs(graph, queue.remove(), ziel);
+				bearbeitet.add(queue.peek());
+				return 1 + bfs(graph, bearbeitet.get(0), ziel);
 			} else {
 				return 0;
 			}
