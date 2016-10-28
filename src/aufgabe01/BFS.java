@@ -18,7 +18,7 @@ public class BFS {
 	}
 
 	
-	
+	// ja
 	
 	public int bfs(Graph<String, DefaultEdge> graph, String start, String ziel) {
 
