@@ -13,7 +13,7 @@ import org.jgrapht.graph.DefaultEdge;
 public class BFS {
 	
 	public BFS() {
-		DirectedGraph<String, DefaultEdge> g = new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+		Graph<String, DefaultEdge> g = new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
 		
 	}
 
