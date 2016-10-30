@@ -7,69 +7,66 @@ import java.util.Queue;
 import java.util.Set;
 
 import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
 public class BFS {
 
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) throws Exception {
 		List<String> kanten = new ArrayList<String>();
 		ReadGraph rg = new ReadGraph();
 		rg.einlesen("C:/Users/bendi/workspace02/GKAP/src/gkaDatein/graph01.gka", kanten);
 		Graph<String, DefaultEdge> graph;
 		graph = rg.graphArt(kanten);
-//		bfs(graph, "a", "b");
-//		for (int i = 0 ; i < graph.edgeSet().size(); i++) { 
-//			System.out.println(s.);
-//		}
-		
-		System.out.println("" + bfs(graph, "a", "l"));
-	}
-	
-	
-	public BFS() {
-		Graph<String, DefaultEdge> g = new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
-		bfs(g, "", "");
+		 bfs(graph, "a", "h").forEach(p -> System.out.println(p.toString()));
 
 	}
 
-	// ja
-
-	public static int bfs(Graph<String, DefaultEdge> graph, String start, String ziel) {
-
-		int f = -1;
-		int t = 0;
-		
+	public static List<DefaultEdge> bfs(Graph<String, DefaultEdge> graph, String start, String ziel) {
 		Queue<String> queue = new LinkedList<String>();
 		queue.add(start);
 		List<String> bearbeitet = new ArrayList<>();
-		
+		List<DefaultEdge> weg = new ArrayList<>();
 
-		while(t == 0) {
-			Set set = graph.edgesOf(queue.peek());
-//			String[] sa;
+		while (true) {
+			Set<DefaultEdge> set = graph.edgesOf(queue.peek());
+			
+			if(start.equals(ziel)) {
+				return weg;
+			}
+			
+			set.forEach(l -> {
+				String[] sa = l.toString().split(" ");
+				sa = sa[2].split(";");
+				if(!bearbeitet.contains(ziel)) {
+					queue.add(sa[0]);
+				}
+			});
 			
 			if (queue.contains(ziel)) {
-				t = 1;
-			} else {
-						set.forEach(l -> {
-							String[] sa = l.toString().split(" ");
-							sa = sa[2].split(";");
-							if (!queue.contains(sa[0]) && !bearbeitet.contains(sa[0])) {
-								queue.add(sa[0]);
-							}
-						});
-			
-
-				if (queue.size() > 0) {
-					bearbeitet.add(queue.peek());
+				DefaultEdge edge = kante(set, ziel);
+				if(!start.equals(ziel)) {
+					String[] sa = edge.toString().split(" ");
+					weg = bfs(graph, start, sa[0].substring(1));
+					weg.add(edge);
+					return weg;
 				} else {
-					return 0;
+					return weg;
 				}
 			}
-			f ++;
+			bearbeitet.add(queue.poll());
 		}
-		return f;
 	}
 
+	public static DefaultEdge kante(Set<DefaultEdge> set, String ziel) {
+		List<DefaultEdge> nachfolger = new ArrayList<>();
+
+		set.forEach(l -> {
+			String[] sa = l.toString().split(" ");
+			sa = sa[2].split(";");
+			if (sa[0].equals(ziel)) {
+				nachfolger.add(l);
+			}
+		});
+		return nachfolger.get(0);
+	}
 }

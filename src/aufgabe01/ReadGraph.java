@@ -51,7 +51,9 @@ public class ReadGraph {
 		} else if(list.get(0).contains("--") && Character.isDigit(list.get(0).charAt(list.get(0).length()-2))){
 			graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 		} else if(list.get(0).contains("->") && Character.isDigit(list.get(0).charAt(list.get(0).length()-2))){
-			graph = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);	
+			graph = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+			Graph<String, DefaultEdge> g = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+			
 		} else {
 			return null;
 		}
