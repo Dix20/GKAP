@@ -2,19 +2,19 @@ package aufgabe01;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import org.jgrapht.Graph;
 import org.jgrapht.WeightedGraph;
-import org.jgrapht.graph.AsWeightedGraph;
-import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.AbstractGraph;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.graph.SimpleWeightedGraph;
+import org.jgrapht.graph.DirectedPseudograph;
+import org.jgrapht.graph.DirectedWeightedPseudograph;
+import org.jgrapht.graph.Pseudograph;
+import org.jgrapht.graph.WeightedPseudograph;
 
 public class ReadGraph {
 
@@ -42,18 +42,16 @@ public class ReadGraph {
 	
 	
 	public Graph<String, DefaultEdge> graphArt(List<String> list) {
-		Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
+		Graph<String, DefaultEdge> graph;// = new DirectedPseudograph<>(DefaultEdge.class);
 		
 		if(list.get(0).contains("->") && !Character.isDigit(list.get(0).charAt(list.get(0).length()-2))) {
-			graph = new DefaultDirectedGraph<>(DefaultEdge.class);
+			graph = new DirectedPseudograph(DefaultEdge.class);
 		} else if(list.get(0).contains("--") && !Character.isDigit(list.get(0).charAt(list.get(0).length()-2))) {
-			graph = new SimpleGraph<>(DefaultEdge.class);
+			graph = new Pseudograph<>(DefaultEdge.class);
 		} else if(list.get(0).contains("--") && Character.isDigit(list.get(0).charAt(list.get(0).length()-2))){
-			graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+			graph = new WeightedPseudograph<>(DefaultWeightedEdge.class);
 		} else if(list.get(0).contains("->") && Character.isDigit(list.get(0).charAt(list.get(0).length()-2))){
-			graph = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
-			Graph<String, DefaultEdge> g = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
-			
+			graph = new DirectedWeightedPseudograph<>(DefaultWeightedEdge.class);	
 		} else {
 			return null;
 		}
@@ -62,6 +60,9 @@ public class ReadGraph {
 		for(int i = 0; i < list.size() ; i++) {
 			String v1 = knoten(list.get(i), 0);
 			String v2 = knoten(list.get(i), 2);
+			if(v2.endsWith(";")) {
+				v2 = v2.substring(0, v2.length()-1);
+			}
 			
 			if(!graph.containsVertex(v1)) {
 				graph.addVertex(v1);
@@ -77,7 +78,7 @@ public class ReadGraph {
 		return graph;
 	}
 	
-	public void knotenKantenHinzufuegenWeighted(WeightedGraph<String, DefaultWeightedEdge> graph, List<String> l) {
+	public void knotenKantenHinzufuegenWeighted(Pseudograph<String, DefaultWeightedEdge> graph, List<String> l) {
 		for(int i = 0; i < l.size() ; i++) {
 			String v1 = knoten(l.get(i), 0);
 			String v2 = knoten(l.get(i), 2);
@@ -92,7 +93,6 @@ public class ReadGraph {
 				DefaultWeightedEdge e1 = graph.addEdge(v1, v2);
 				int weight = Integer.parseInt(knoten(l.get(i), 5));
 				graph.setEdgeWeight(e1, weight);
-				
 			}
 		}
 	}
