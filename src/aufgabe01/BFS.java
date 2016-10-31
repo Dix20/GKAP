@@ -19,6 +19,7 @@ public class BFS {
 		 bfs(graph, "a", "h").forEach(p -> System.out.println(p.toString()));
 
 	}
+	// Test
 
 	public static List<DefaultEdge> bfs(Graph<String, DefaultEdge> graph, String start, String ziel) {
 		Queue<String> queue = new LinkedList<String>();
